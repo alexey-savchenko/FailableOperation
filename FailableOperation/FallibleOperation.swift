@@ -12,7 +12,7 @@ enum Result<T> {
   case success(T)
   case failure(Error)
   
-  var isFail: Bool {
+  var isFailure: Bool {
     switch self {
     case .failure:
       return true
@@ -56,7 +56,7 @@ struct FallibleSyncOperation<Input, Output> {
   func execute(with input: Input, completion: @escaping ResultHandler) {
     (queue ?? .main).asyncAfter(deadline: .now()) {
       let result = self.wrapped(input)
-      if result.isFail && self.attempts < self.maxAttempts {
+      if result.isFailure && self.attempts < self.maxAttempts {
         (self.queue ?? .main).asyncAfter(deadline: .now() + (self.retryDelay ?? 0), execute: {
           self.spawnOperation(with: self.attempts + 1).execute(with: input, completion: completion)
         })
@@ -98,7 +98,7 @@ struct FallibleAsyncOperation<Input, Output> {
   func execute(with input: Input, completion: @escaping ResultHandler) {
     (queue ?? .main).asyncAfter(deadline: .now()) {
       self.wrapped(input) { result in
-        if result.isFail && self.attempts < self.maxAttempts {
+        if result.isFailure && self.attempts < self.maxAttempts {
           (self.queue ?? .main).asyncAfter(deadline: .now() + (self.retryDelay ?? 0), execute: {
             self.spawnOperation(with: self.attempts + 1).execute(with: input, completion: completion)
           })
