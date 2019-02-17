@@ -10,11 +10,11 @@ import Foundation
 
 enum Result<T> {
   case success(T)
-  case fail(Error)
+  case failure(Error)
   
   var isFail: Bool {
     switch self {
-    case .fail:
+    case .failure:
       return true
     case .success:
       return false
@@ -23,7 +23,7 @@ enum Result<T> {
   
   var isSuccess: Bool {
     switch self {
-    case .fail:
+    case .failure:
       return false
     case .success:
       return true
@@ -31,7 +31,7 @@ enum Result<T> {
   }
 }
 
-struct FailableSyncOperation<Input, Output> {
+struct FallibleSyncOperation<Input, Output> {
   
   typealias ResultHandler = (Result<Output>) -> Void
   typealias SyncOperation = (Input) -> Result<Output>
@@ -66,14 +66,14 @@ struct FailableSyncOperation<Input, Output> {
     }
   }
   
-  private func spawnOperation(with attempts: Int) -> FailableSyncOperation<Input, Output> {
-    var op = FailableSyncOperation(maxAttempts, queue: queue, retryDelay: retryDelay, operation: wrapped)
+  private func spawnOperation(with attempts: Int) -> FallibleSyncOperation<Input, Output> {
+    var op = FallibleSyncOperation(maxAttempts, queue: queue, retryDelay: retryDelay, operation: wrapped)
     op.attempts = attempts
     return op
   }
 }
 
-struct FailableAsyncOperation<Input, Output> {
+struct FallibleAsyncOperation<Input, Output> {
   
   typealias ResultHandler = (Result<Output>) -> Void
   typealias AsyncOperation = (Input, (Result<Output>) -> Void) -> Void
@@ -109,8 +109,8 @@ struct FailableAsyncOperation<Input, Output> {
     }
   }
   
-  private func spawnOperation(with attempts: Int) -> FailableAsyncOperation<Input, Output> {
-    var op = FailableAsyncOperation(maxAttempts, queue: queue, retryDelay: retryDelay, operation: wrapped)
+  private func spawnOperation(with attempts: Int) -> FallibleAsyncOperation<Input, Output> {
+    var op = FallibleAsyncOperation(maxAttempts, queue: queue, retryDelay: retryDelay, operation: wrapped)
     op.attempts = attempts
     return op
   }

@@ -17,10 +17,10 @@ class ViewController: UIViewController {
       
     }
     
-    let sync = FailableSyncOperation<Void, Int>(2, retryDelay: 5) { _ in
+    let sync = FallibleSyncOperation<Void, Int>(2, retryDelay: 5) { _ in
 //      if arc4random_uniform(10) < 5 {
         print("Sync operation fail")
-        return Result.fail(SomeError())
+        return Result.failure(SomeError())
 //      } else {
 //        print("Sync operation success")
 //        return Result.success(42)
@@ -34,20 +34,17 @@ class ViewController: UIViewController {
     func someAsyncFunction(_ completion: ((Result<Int>) -> Void)) {
       if arc4random_uniform(10) < 5 {
         print("Async operation fail")
-        completion(.fail(SomeError()))
+        completion(.failure(SomeError()))
       } else {
         print("Async operation success")
         completion(.success(42))
       }
     }
 
-    let async = FailableAsyncOperation<Void, Int> { input, handler in
+    let async = FallibleAsyncOperation<Void, Int> { input, handler in
       someAsyncFunction(handler)
     }
-//    let async = FailableAsyncOperation<Void, Int> { (input, handler) in
-//      someAsyncFunction(handler)
-//    }
-    
+
     async.execute(with: ()) { (result) in
       print("Result of failable async operaion - \(result)")
     }
