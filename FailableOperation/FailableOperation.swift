@@ -39,23 +39,34 @@ struct FailableSyncOperation<Input, Output> {
   private var attempts = 0
   private let maxAttempts: Int
   private let wrapped: SyncOperation
+  private var queue: DispatchQueue?
+  private var retryDelay: TimeInterval?
   
-  init(_ maxAttempts: Int = 2, operation: @escaping SyncOperation) {
+  init(_ maxAttempts: Int = 2,
+       queue: DispatchQueue? = nil,
+       retryDelay: TimeInterval? = nil,
+       operation: @escaping SyncOperation) {
     self.maxAttempts = maxAttempts
     self.wrapped = operation
+    self.queue = queue
+    self.retryDelay = retryDelay
   }
   
-  func execute(with input: Input, completion: ResultHandler) {
-    let result = wrapped(input)
-    if result.isFail && attempts < maxAttempts {
-      spawnOperation(with: attempts + 1).execute(with: input, completion: completion)
-    } else {
-      completion(result)
+  func execute(with input: Input, completion: @escaping ResultHandler) {
+    (queue ?? .main).asyncAfter(deadline: .now()) {
+      let result = self.wrapped(input)
+      if result.isFail && self.attempts < self.maxAttempts {
+        (self.queue ?? .main).asyncAfter(deadline: .now() + (self.retryDelay ?? 0), execute: {
+          self.spawnOperation(with: self.attempts + 1).execute(with: input, completion: completion)
+        })
+      } else {
+        completion(result)
+      }
     }
   }
   
   private func spawnOperation(with attempts: Int) -> FailableSyncOperation<Input, Output> {
-    var op = FailableSyncOperation(maxAttempts, operation: wrapped)
+    var op = FailableSyncOperation(maxAttempts, queue: queue, retryDelay: retryDelay, operation: wrapped)
     op.attempts = attempts
     return op
   }

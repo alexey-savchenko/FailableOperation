@@ -17,36 +17,37 @@ class ViewController: UIViewController {
       
     }
     
-    let sync = FailableSyncOperation<Void, Int> { _ in
-      if arc4random_uniform(10) < 5 {
+    let sync = FailableSyncOperation<Void, Int>(2, retryDelay: 5)
+    { _ in
+//      if arc4random_uniform(10) < 5 {
         print("Sync operation fail")
         return Result.fail(SomeError())
-      } else {
-        print("Sync operation success")
-        return Result.success(42)
-      }
+//      } else {
+//        print("Sync operation success")
+//        return Result.success(42)
+//      }
     }
     
     sync.execute(with: ()) { (result) in
       print("Result of failable sync operaion - \(result)")
     }
     
-    func someAsyncFunction(_ completion: ((Result<Int>) -> Void)) {
-      if arc4random_uniform(10) < 5 {
-        print("Async operation fail")
-        completion(.fail(SomeError()))
-      } else {
-        print("Async operation success")
-        completion(.success(42))
-      }
-    }
-    
-    let async = FailableAsyncOperation<Void, Int> { (input, handler) in
-      someAsyncFunction(handler)
-    }
-    
-    async.execute(with: ()) { (result) in
-      print("Result of failable async operaion - \(result)")
-    }
+//    func someAsyncFunction(_ completion: ((Result<Int>) -> Void)) {
+//      if arc4random_uniform(10) < 5 {
+//        print("Async operation fail")
+//        completion(.fail(SomeError()))
+//      } else {
+//        print("Async operation success")
+//        completion(.success(42))
+//      }
+//    }
+//    
+//    let async = FailableAsyncOperation<Void, Int> { (input, handler) in
+//      someAsyncFunction(handler)
+//    }
+//    
+//    async.execute(with: ()) { (result) in
+//      print("Result of failable async operaion - \(result)")
+//    }
   }
 }
