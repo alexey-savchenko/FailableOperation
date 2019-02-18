@@ -16,7 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2271F388221975EA001F535E /* FailableOperation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FailableOperation.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2271F388221975EA001F535E /* FallibleOperation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FallibleOperation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2271F38B221975EA001F535E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2271F38D221975EA001F535E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2271F390221975EA001F535E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -40,7 +40,7 @@
 		2271F37F221975EA001F535E = {
 			isa = PBXGroup;
 			children = (
-				2271F38A221975EA001F535E /* FailableOperation */,
+				2271F38A221975EA001F535E /* FallibleOperation */,
 				2271F389221975EA001F535E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,12 +48,12 @@
 		2271F389221975EA001F535E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2271F388221975EA001F535E /* FailableOperation.app */,
+				2271F388221975EA001F535E /* FallibleOperation.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2271F38A221975EA001F535E /* FailableOperation */ = {
+		2271F38A221975EA001F535E /* FallibleOperation */ = {
 			isa = PBXGroup;
 			children = (
 				2271F38B221975EA001F535E /* AppDelegate.swift */,
@@ -64,15 +64,15 @@
 				2271F397221975ED001F535E /* Info.plist */,
 				2271F39D2219762C001F535E /* FallibleOperation.swift */,
 			);
-			path = FailableOperation;
+			path = FallibleOperation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2271F387221975EA001F535E /* FailableOperation */ = {
+		2271F387221975EA001F535E /* FallibleOperation */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2271F39A221975ED001F535E /* Build configuration list for PBXNativeTarget "FailableOperation" */;
+			buildConfigurationList = 2271F39A221975ED001F535E /* Build configuration list for PBXNativeTarget "FallibleOperation" */;
 			buildPhases = (
 				2271F384221975EA001F535E /* Sources */,
 				2271F385221975EA001F535E /* Frameworks */,
@@ -82,9 +82,9 @@
 			);
 			dependencies = (
 			);
-			name = FailableOperation;
+			name = FallibleOperation;
 			productName = FailableOperation;
-			productReference = 2271F388221975EA001F535E /* FailableOperation.app */;
+			productReference = 2271F388221975EA001F535E /* FallibleOperation.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -102,7 +102,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2271F383221975EA001F535E /* Build configuration list for PBXProject "FailableOperation" */;
+			buildConfigurationList = 2271F383221975EA001F535E /* Build configuration list for PBXProject "FallibleOperation" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -115,7 +115,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2271F387221975EA001F535E /* FailableOperation */,
+				2271F387221975EA001F535E /* FallibleOperation */,
 			);
 		};
 /* End PBXProject section */
@@ -288,12 +288,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FB2A9NDV84;
-				INFOPLIST_FILE = FailableOperation/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/FallibleOperation/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = svch.FailableOperation;
+				PRODUCT_BUNDLE_IDENTIFIER = svch.FallibleOperation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -306,12 +306,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FB2A9NDV84;
-				INFOPLIST_FILE = FailableOperation/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/FallibleOperation/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = svch.FailableOperation;
+				PRODUCT_BUNDLE_IDENTIFIER = svch.FallibleOperation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -321,7 +321,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2271F383221975EA001F535E /* Build configuration list for PBXProject "FailableOperation" */ = {
+		2271F383221975EA001F535E /* Build configuration list for PBXProject "FallibleOperation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2271F398221975ED001F535E /* Debug */,
@@ -330,7 +330,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2271F39A221975ED001F535E /* Build configuration list for PBXNativeTarget "FailableOperation" */ = {
+		2271F39A221975ED001F535E /* Build configuration list for PBXNativeTarget "FallibleOperation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2271F39B221975ED001F535E /* Debug */,
