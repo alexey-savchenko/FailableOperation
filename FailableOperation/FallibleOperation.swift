@@ -49,7 +49,7 @@ struct FallibleSyncOperation<Input, Output> {
   ///   - queue: Target queue that on which wrapped function will be executed. (Defaults to `.main`)
   ///   - retryDelay: Desired delay between consecutive retries. (Defaults to: 0)
   ///   - operation: Function to wrap
-  init(_ maxAttempts: Int = 2,
+  init(maxAttempts: Int = 2,
        queue: DispatchQueue = .main,
        retryDelay: TimeInterval = 0,
        operation: @escaping SyncOperation) {
@@ -81,7 +81,7 @@ struct FallibleSyncOperation<Input, Output> {
   /// - Parameter attempts: New value of attempts used
   /// - Returns: Operation with updated `attempts` value
   private func spawnOperation(with attempts: Int) -> FallibleSyncOperation<Input, Output> {
-    var op = FallibleSyncOperation(maxAttempts, queue: queue, retryDelay: retryDelay, operation: wrapped)
+    var op = FallibleSyncOperation(maxAttempts: maxAttempts, queue: queue, retryDelay: retryDelay, operation: wrapped)
     op.attempts = attempts
     return op
   }
@@ -105,7 +105,7 @@ struct FallibleAsyncOperation<Input, Output> {
   ///   - queue: Target queue that on which wrapped function will be executed. (Defaults to `.main`)
   ///   - retryDelay: Desired delay between consecutive retries. (Defaults to: 0)
   ///   - operation: Function to wrap
-  init(_ maxAttempts: Int = 2,
+  init(maxAttempts: Int = 2,
        queue: DispatchQueue = .main,
        retryDelay: TimeInterval = 0,
        operation: @escaping AsyncOperation) {
@@ -138,7 +138,7 @@ struct FallibleAsyncOperation<Input, Output> {
   /// - Parameter attempts: New value of attempts used
   /// - Returns: Operation with updated `attempts` value
   private func spawnOperation(with attempts: Int) -> FallibleAsyncOperation<Input, Output> {
-    var op = FallibleAsyncOperation(maxAttempts, queue: queue, retryDelay: retryDelay, operation: wrapped)
+    var op = FallibleAsyncOperation(maxAttempts: maxAttempts, queue: queue, retryDelay: retryDelay, operation: wrapped)
     op.attempts = attempts
     return op
   }

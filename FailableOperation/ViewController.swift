@@ -17,14 +17,14 @@ class ViewController: UIViewController {
       
     }
     
-    let sync = FallibleSyncOperation<Void, Int>(2, retryDelay: 5) { _ in
-//      if arc4random_uniform(10) < 5 {
+    let sync = FallibleSyncOperation<Void, Int>(maxAttempts: 2, retryDelay: 5) { _ in
+      if arc4random_uniform(10) < 5 {
         print("Sync operation fail")
         return Result.failure(SomeError())
-//      } else {
-//        print("Sync operation success")
-//        return Result.success(42)
-//      }
+      } else {
+        print("Sync operation success")
+        return Result.success(42)
+      }
     }
     
     sync.execute(with: ()) { (result) in
@@ -40,8 +40,10 @@ class ViewController: UIViewController {
         completion(.success(42))
       }
     }
-
-    let async = FallibleAsyncOperation<Void, Int> { input, handler in
+    
+    let specificQueue = DispatchQueue(label: "SomeSpecificQueue")
+    
+    let async = FallibleAsyncOperation<Void, Int>(maxAttempts: 2, queue: specificQueue, retryDelay: 3) { input, handler in
       someAsyncFunction(handler)
     }
 
