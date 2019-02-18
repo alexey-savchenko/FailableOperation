@@ -39,12 +39,19 @@ struct FallibleSyncOperation<Input, Output> {
   private var attempts = 0
   private let maxAttempts: Int
   private let wrapped: SyncOperation
-  private let queue: DispatchQueue?
-  private let retryDelay: TimeInterval?
+  private let queue: DispatchQueue
+  private let retryDelay: TimeInterval
   
+  /// Fallible synchronous operation wrapper
+  ///
+  /// - Parameters:
+  ///   - maxAttempts: Maximum number of attempts to take
+  ///   - queue: Target queue that on which wrapped function will be executed. (Defaults to `.main`)
+  ///   - retryDelay: Desired delay between consecutive retries. (Defaults to: 0)
+  ///   - operation: Function to wrap
   init(_ maxAttempts: Int = 2,
-       queue: DispatchQueue? = nil,
-       retryDelay: TimeInterval? = nil,
+       queue: DispatchQueue = .main,
+       retryDelay: TimeInterval = 0,
        operation: @escaping SyncOperation) {
     
     self.maxAttempts = maxAttempts
@@ -53,11 +60,16 @@ struct FallibleSyncOperation<Input, Output> {
     self.retryDelay = retryDelay
   }
   
+  /// Execute wrapped function
+  ///
+  /// - Parameters:
+  ///   - input: Input value
+  ///   - completion: Closure that will handle final outcome of execution
   func execute(with input: Input, completion: @escaping ResultHandler) {
-    (queue ?? .main).asyncAfter(deadline: .now()) {
+    queue.asyncAfter(deadline: .now()) {
       let result = self.wrapped(input)
       if result.isFailure && self.attempts < self.maxAttempts {
-        (self.queue ?? .main).asyncAfter(deadline: .now() + (self.retryDelay ?? 0), execute: {
+        self.queue.asyncAfter(deadline: .now() + self.retryDelay, execute: {
           self.spawnOperation(with: self.attempts + 1).execute(with: input, completion: completion)
         })
       } else {
@@ -66,6 +78,8 @@ struct FallibleSyncOperation<Input, Output> {
     }
   }
   
+  /// - Parameter attempts: New value of attempts used
+  /// - Returns: Operation with updated `attempts` value
   private func spawnOperation(with attempts: Int) -> FallibleSyncOperation<Input, Output> {
     var op = FallibleSyncOperation(maxAttempts, queue: queue, retryDelay: retryDelay, operation: wrapped)
     op.attempts = attempts
@@ -81,12 +95,19 @@ struct FallibleAsyncOperation<Input, Output> {
   private var attempts = 0
   private let maxAttempts: Int
   private let wrapped: AsyncOperation
-  private let queue: DispatchQueue?
-  private let retryDelay: TimeInterval?
+  private let queue: DispatchQueue
+  private let retryDelay: TimeInterval
   
+  /// Fallible synchronous operation wrapper
+  ///
+  /// - Parameters:
+  ///   - maxAttempts: Maximum number of attempts to take
+  ///   - queue: Target queue that on which wrapped function will be executed. (Defaults to `.main`)
+  ///   - retryDelay: Desired delay between consecutive retries. (Defaults to: 0)
+  ///   - operation: Function to wrap
   init(_ maxAttempts: Int = 2,
-       queue: DispatchQueue? = nil,
-       retryDelay: TimeInterval? = nil,
+       queue: DispatchQueue = .main,
+       retryDelay: TimeInterval = 0,
        operation: @escaping AsyncOperation) {
     
     self.maxAttempts = maxAttempts
@@ -95,11 +116,16 @@ struct FallibleAsyncOperation<Input, Output> {
     self.retryDelay = retryDelay
   }
   
+  /// Execute wrapped function
+  ///
+  /// - Parameters:
+  ///   - input: Input value
+  ///   - completion: Closure that will handle final outcome of execution
   func execute(with input: Input, completion: @escaping ResultHandler) {
-    (queue ?? .main).asyncAfter(deadline: .now()) {
+    queue.asyncAfter(deadline: .now()) {
       self.wrapped(input) { result in
         if result.isFailure && self.attempts < self.maxAttempts {
-          (self.queue ?? .main).asyncAfter(deadline: .now() + (self.retryDelay ?? 0), execute: {
+          self.queue.asyncAfter(deadline: .now() + self.retryDelay, execute: {
             self.spawnOperation(with: self.attempts + 1).execute(with: input, completion: completion)
           })
         } else {
@@ -109,6 +135,8 @@ struct FallibleAsyncOperation<Input, Output> {
     }
   }
   
+  /// - Parameter attempts: New value of attempts used
+  /// - Returns: Operation with updated `attempts` value
   private func spawnOperation(with attempts: Int) -> FallibleAsyncOperation<Input, Output> {
     var op = FallibleAsyncOperation(maxAttempts, queue: queue, retryDelay: retryDelay, operation: wrapped)
     op.attempts = attempts

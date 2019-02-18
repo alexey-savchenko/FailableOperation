@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     super.viewDidLoad()
     
     struct SomeError: Error {
-      Optional
+      
     }
     
     let sync = FallibleSyncOperation<Void, Int>(2, retryDelay: 5) { _ in
